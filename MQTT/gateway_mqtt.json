@@ -1,0 +1,314 @@
+[
+    {
+        "id": "f2e97d9d.351f2",
+        "type": "tab",
+        "label": "Flow 1"
+    },
+    {
+        "id": "8eca2512.dec258",
+        "type": "tab",
+        "label": "Teste MQTT"
+    },
+    {
+        "id": "612212d1.c6eaec",
+        "type": "serial-port",
+        "z": "",
+        "serialport": "COM3",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": false
+    },
+    {
+        "id": "1fc93f5d.e02fb1",
+        "type": "mqtt-broker",
+        "z": "",
+        "broker": "10.3.2.41",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    },
+    {
+        "id": "3dff042b.98296c",
+        "type": "serial in",
+        "z": "f2e97d9d.351f2",
+        "name": "",
+        "serial": "612212d1.c6eaec",
+        "x": 110,
+        "y": 66,
+        "wires": [
+            [
+                "541c4fde.8a6dc"
+            ]
+        ]
+    },
+    {
+        "id": "541c4fde.8a6dc",
+        "type": "function",
+        "z": "f2e97d9d.351f2",
+        "name": "Received values",
+        "func": "var obj = JSON.parse(msg.payload.trim());\nif(\"luz\" in obj) {\n    msg.payload = obj.luz;\n} else {\n    msg = undefined;\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 250,
+        "y": 144,
+        "wires": [
+            [
+                "63237f22.620da"
+            ]
+        ]
+    },
+    {
+        "id": "63237f22.620da",
+        "type": "mqtt out",
+        "z": "f2e97d9d.351f2",
+        "name": "",
+        "topic": "fiap/labC/arduino41/luz",
+        "qos": "0",
+        "retain": "false",
+        "broker": "1fc93f5d.e02fb1",
+        "x": 426,
+        "y": 51,
+        "wires": []
+    },
+    {
+        "id": "686a5558.6775cc",
+        "type": "mqtt in",
+        "z": "f2e97d9d.351f2",
+        "name": "",
+        "topic": "fiap/labC/arduino41/led",
+        "qos": "1",
+        "broker": "1fc93f5d.e02fb1",
+        "x": 125,
+        "y": 221,
+        "wires": [
+            [
+                "170a0688.02a7e9"
+            ]
+        ]
+    },
+    {
+        "id": "170a0688.02a7e9",
+        "type": "function",
+        "z": "f2e97d9d.351f2",
+        "name": "Formata cmd LED",
+        "func": "msg.payload = {\"led\": parseInt(msg.payload) };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 301,
+        "y": 293,
+        "wires": [
+            [
+                "f4f8144.27b1ae8"
+            ]
+        ]
+    },
+    {
+        "id": "f4f8144.27b1ae8",
+        "type": "serial out",
+        "z": "f2e97d9d.351f2",
+        "name": "",
+        "serial": "612212d1.c6eaec",
+        "x": 427,
+        "y": 213,
+        "wires": []
+    },
+    {
+        "id": "5bd3fe90.2bfb9",
+        "type": "mqtt in",
+        "z": "8eca2512.dec258",
+        "name": "",
+        "topic": "fiap/labC/+/luz",
+        "qos": "2",
+        "broker": "1fc93f5d.e02fb1",
+        "x": 114,
+        "y": 75,
+        "wires": [
+            [
+                "3cf45560.eb31ca"
+            ]
+        ]
+    },
+    {
+        "id": "3cf45560.eb31ca",
+        "type": "debug",
+        "z": "8eca2512.dec258",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 411,
+        "y": 71,
+        "wires": []
+    },
+    {
+        "id": "8ed6ef53.ba371",
+        "type": "inject",
+        "z": "8eca2512.dec258",
+        "name": "",
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 98,
+        "y": 159,
+        "wires": [
+            [
+                "478e9423.64170c",
+                "54936131.7b31f",
+                "3e4349f.23f14b6",
+                "c42885df.2c9aa8",
+                "19b2a04f.5b76"
+            ]
+        ]
+    },
+    {
+        "id": "478e9423.64170c",
+        "type": "mqtt out",
+        "z": "8eca2512.dec258",
+        "name": "",
+        "topic": "fiap/labC/arduino19/led",
+        "qos": "1",
+        "retain": "true",
+        "broker": "1fc93f5d.e02fb1",
+        "x": 398,
+        "y": 157,
+        "wires": []
+    },
+    {
+        "id": "28f5351e.a3681a",
+        "type": "inject",
+        "z": "8eca2512.dec258",
+        "name": "",
+        "topic": "",
+        "payload": "100",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 97,
+        "y": 203,
+        "wires": [
+            [
+                "478e9423.64170c",
+                "54936131.7b31f",
+                "3e4349f.23f14b6",
+                "c42885df.2c9aa8",
+                "19b2a04f.5b76"
+            ]
+        ]
+    },
+    {
+        "id": "3713eea3.5e24a2",
+        "type": "inject",
+        "z": "8eca2512.dec258",
+        "name": "",
+        "topic": "",
+        "payload": "200",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 99,
+        "y": 254,
+        "wires": [
+            [
+                "478e9423.64170c",
+                "3e4349f.23f14b6",
+                "54936131.7b31f",
+                "c42885df.2c9aa8",
+                "19b2a04f.5b76"
+            ]
+        ]
+    },
+    {
+        "id": "fc26d60f.db8c88",
+        "type": "inject",
+        "z": "8eca2512.dec258",
+        "name": "",
+        "topic": "",
+        "payload": "255",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 99,
+        "y": 306,
+        "wires": [
+            [
+                "478e9423.64170c",
+                "54936131.7b31f",
+                "3e4349f.23f14b6",
+                "c42885df.2c9aa8",
+                "19b2a04f.5b76"
+            ]
+        ]
+    },
+    {
+        "id": "54936131.7b31f",
+        "type": "mqtt out",
+        "z": "8eca2512.dec258",
+        "name": "",
+        "topic": "fiap/labC/arduino54/led",
+        "qos": "1",
+        "retain": "true",
+        "broker": "1fc93f5d.e02fb1",
+        "x": 396,
+        "y": 215,
+        "wires": []
+    },
+    {
+        "id": "3e4349f.23f14b6",
+        "type": "mqtt out",
+        "z": "8eca2512.dec258",
+        "name": "",
+        "topic": "fiap/labC/arduino09/led",
+        "qos": "1",
+        "retain": "true",
+        "broker": "1fc93f5d.e02fb1",
+        "x": 401,
+        "y": 272,
+        "wires": []
+    },
+    {
+        "id": "c42885df.2c9aa8",
+        "type": "mqtt out",
+        "z": "8eca2512.dec258",
+        "name": "",
+        "topic": "fiap/labC/arduino40/led",
+        "qos": "1",
+        "retain": "true",
+        "broker": "1fc93f5d.e02fb1",
+        "x": 400,
+        "y": 332,
+        "wires": []
+    },
+    {
+        "id": "19b2a04f.5b76",
+        "type": "mqtt out",
+        "z": "8eca2512.dec258",
+        "name": "",
+        "topic": "fiap/labC/arduino21/led",
+        "qos": "1",
+        "retain": "true",
+        "broker": "1fc93f5d.e02fb1",
+        "x": 399,
+        "y": 399,
+        "wires": []
+    }
+]
