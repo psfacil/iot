@@ -1,0 +1,488 @@
+[
+    {
+        "id": "ecfe5d05.fa3dc",
+        "type": "tab",
+        "label": "Gateway da NAC"
+    },
+    {
+        "id": "7eae8d7d.716b84",
+        "type": "tab",
+        "label": "Teste do Gateway da NAC"
+    },
+    {
+        "id": "a3eea7eb.844ef8",
+        "type": "tab",
+        "label": "API Web"
+    },
+    {
+        "id": "ab19c9f7.4340b8",
+        "type": "tab",
+        "label": "Cliente HTTP"
+    },
+    {
+        "id": "eede1415.773538",
+        "type": "serial-port",
+        "z": "",
+        "serialport": "COM3",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": false
+    },
+    {
+        "id": "95a8ac08.6041d",
+        "type": "mqtt-broker",
+        "z": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    },
+    {
+        "id": "85ac129e.26104",
+        "type": "serial in",
+        "z": "ecfe5d05.fa3dc",
+        "name": "",
+        "serial": "eede1415.773538",
+        "x": 95,
+        "y": 100,
+        "wires": [
+            [
+                "57a34bd7.6aedb4"
+            ]
+        ]
+    },
+    {
+        "id": "83b84817.1063b8",
+        "type": "inject",
+        "z": "ecfe5d05.fa3dc",
+        "name": "",
+        "topic": "",
+        "payload": "{\"luz\":650}",
+        "payloadType": "str",
+        "repeat": "2",
+        "crontab": "",
+        "once": false,
+        "x": 108,
+        "y": 169,
+        "wires": [
+            [
+                "57a34bd7.6aedb4"
+            ]
+        ]
+    },
+    {
+        "id": "721f8fea.1c4c7",
+        "type": "mqtt out",
+        "z": "ecfe5d05.fa3dc",
+        "name": "",
+        "topic": "fiap/lab/902/grupo/01/maquina/51/sensores",
+        "qos": "0",
+        "retain": "",
+        "broker": "95a8ac08.6041d",
+        "x": 475,
+        "y": 123,
+        "wires": []
+    },
+    {
+        "id": "57a34bd7.6aedb4",
+        "type": "function",
+        "z": "ecfe5d05.fa3dc",
+        "name": "",
+        "func": "var obj = JSON.parse(msg.payload.trim());\nmsg.payload = {\"d\": obj};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 241,
+        "y": 157,
+        "wires": [
+            [
+                "721f8fea.1c4c7"
+            ]
+        ]
+    },
+    {
+        "id": "406443d0.fe772c",
+        "type": "mqtt in",
+        "z": "7eae8d7d.716b84",
+        "name": "",
+        "topic": "fiap/lab/902/grupo/01/maquina/51/sensores",
+        "qos": "2",
+        "broker": "95a8ac08.6041d",
+        "x": 200,
+        "y": 70,
+        "wires": [
+            [
+                "4a90faec.b06184"
+            ]
+        ]
+    },
+    {
+        "id": "4a90faec.b06184",
+        "type": "debug",
+        "z": "7eae8d7d.716b84",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "false",
+        "x": 398,
+        "y": 135,
+        "wires": []
+    },
+    {
+        "id": "98a6e3e0.1f91d",
+        "type": "mqtt in",
+        "z": "ecfe5d05.fa3dc",
+        "name": "",
+        "topic": "fiap/lab/902/grupo/01/maquina/51/comandos",
+        "qos": "1",
+        "broker": "95a8ac08.6041d",
+        "x": 209,
+        "y": 237,
+        "wires": [
+            [
+                "c2144286.3f026"
+            ]
+        ]
+    },
+    {
+        "id": "16feb78d.51cd18",
+        "type": "serial out",
+        "z": "ecfe5d05.fa3dc",
+        "name": "",
+        "serial": "eede1415.773538",
+        "x": 417,
+        "y": 323,
+        "wires": []
+    },
+    {
+        "id": "c2144286.3f026",
+        "type": "function",
+        "z": "ecfe5d05.fa3dc",
+        "name": "",
+        "func": "var obj = JSON.parse(msg.payload.trim());\nif(\"cmd\" in obj) {\n    msg.payload = obj.cmd;\n} else {\n    msg = null;\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 238,
+        "y": 314,
+        "wires": [
+            [
+                "16feb78d.51cd18",
+                "5dabf397.2c94bc"
+            ]
+        ]
+    },
+    {
+        "id": "5dabf397.2c94bc",
+        "type": "debug",
+        "z": "ecfe5d05.fa3dc",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 384,
+        "y": 375,
+        "wires": []
+    },
+    {
+        "id": "75be87bf.2e9138",
+        "type": "inject",
+        "z": "7eae8d7d.716b84",
+        "name": "",
+        "topic": "",
+        "payload": "{\"cmd\":{\"red\":200,\"blue\":100}}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 117,
+        "y": 177,
+        "wires": [
+            [
+                "2c01f1fc.028e0e"
+            ]
+        ]
+    },
+    {
+        "id": "2c01f1fc.028e0e",
+        "type": "mqtt out",
+        "z": "7eae8d7d.716b84",
+        "name": "",
+        "topic": "fiap/lab/902/grupo/01/maquina/51/comandos",
+        "qos": "1",
+        "retain": "",
+        "broker": "95a8ac08.6041d",
+        "x": 335,
+        "y": 241,
+        "wires": []
+    },
+    {
+        "id": "3610d97e.a99cf6",
+        "type": "http in",
+        "z": "a3eea7eb.844ef8",
+        "name": "",
+        "url": "/luz",
+        "method": "get",
+        "swaggerDoc": "",
+        "x": 85,
+        "y": 192,
+        "wires": [
+            [
+                "c7d0e95.f804218"
+            ]
+        ]
+    },
+    {
+        "id": "29337524.6e459a",
+        "type": "http response",
+        "z": "a3eea7eb.844ef8",
+        "name": "",
+        "x": 413,
+        "y": 190,
+        "wires": []
+    },
+    {
+        "id": "ba294084.001b3",
+        "type": "mqtt in",
+        "z": "a3eea7eb.844ef8",
+        "name": "",
+        "topic": "fiap/lab/902/grupo/01/maquina/51/sensores",
+        "qos": "0",
+        "broker": "95a8ac08.6041d",
+        "x": 216,
+        "y": 48,
+        "wires": [
+            [
+                "6e6ad2ba.4c111c"
+            ]
+        ]
+    },
+    {
+        "id": "6e6ad2ba.4c111c",
+        "type": "change",
+        "z": "a3eea7eb.844ef8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "luz",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 291,
+        "y": 97,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c7d0e95.f804218",
+        "type": "function",
+        "z": "a3eea7eb.844ef8",
+        "name": "",
+        "func": "var obj = JSON.parse(flow.get(\"luz\"));\nif(\"d\" in obj && \"luz\" in obj.d) {\n    var valor = obj.d.luz;\n    msg.payload={\"value\": valor};\n    msg.statusCode = 200;\n    msg.headers = {\"Content-Type\":\"application/json\"};\n} else {\n    msg.statusCode = 500;\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 249,
+        "y": 203,
+        "wires": [
+            [
+                "29337524.6e459a"
+            ]
+        ]
+    },
+    {
+        "id": "4ec5e97.094f218",
+        "type": "http request",
+        "z": "ab19c9f7.4340b8",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "url": "localhost:1880/luz",
+        "tls": "",
+        "x": 231.5,
+        "y": 106,
+        "wires": [
+            [
+                "50ba2c1b.6093e4"
+            ]
+        ]
+    },
+    {
+        "id": "50ba2c1b.6093e4",
+        "type": "debug",
+        "z": "ab19c9f7.4340b8",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 422,
+        "y": 82,
+        "wires": []
+    },
+    {
+        "id": "ccf89b00.b49988",
+        "type": "inject",
+        "z": "ab19c9f7.4340b8",
+        "name": "",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 85,
+        "y": 60,
+        "wires": [
+            [
+                "4ec5e97.094f218"
+            ]
+        ]
+    },
+    {
+        "id": "5482e54e.6eb7ac",
+        "type": "http in",
+        "z": "a3eea7eb.844ef8",
+        "name": "",
+        "url": "/led",
+        "method": "put",
+        "swaggerDoc": "",
+        "x": 94,
+        "y": 292,
+        "wires": [
+            [
+                "3884ce3a.cbb3c2"
+            ]
+        ]
+    },
+    {
+        "id": "32c48328.c0321c",
+        "type": "mqtt out",
+        "z": "a3eea7eb.844ef8",
+        "name": "",
+        "topic": "fiap/lab/902/grupo/01/maquina/51/comandos",
+        "qos": "1",
+        "retain": "true",
+        "broker": "95a8ac08.6041d",
+        "x": 498,
+        "y": 253,
+        "wires": []
+    },
+    {
+        "id": "8b9a50a6.25b9d",
+        "type": "http response",
+        "z": "a3eea7eb.844ef8",
+        "name": "",
+        "x": 394,
+        "y": 385,
+        "wires": []
+    },
+    {
+        "id": "3884ce3a.cbb3c2",
+        "type": "function",
+        "z": "a3eea7eb.844ef8",
+        "name": "",
+        "func": "var obj = msg.payload;\nif(\"color\" in obj) {\n    var cmd = null;\n    msg.statusCode = 200;\n    if(obj.color == \"WHITE\") {\n        cmd = {\"red\":255, \"green\":255, \"blue\":255};\n    } else if(obj.color == \"BLACK\") {\n        cmd = {\"red\":0, \"green\":0, \"blue\":0};\n    } else if(obj.color == \"RED\") {\n        cmd = {\"red\":255, \"green\":0, \"blue\":0};\n    } else if(obj.color == \"GREEN\") {\n        cmd = {\"red\":0, \"green\":255, \"blue\":0};\n    } else if(obj.color == \"BLUE\") {\n        cmd = {\"red\":0, \"green\":0, \"blue\":255};\n    } else if(obj.color == \"ORANGE\") {\n        cmd = {\"red\":255, \"green\":64, \"blue\":0};\n    } else if(obj.color == \"YELLOW\") {\n        cmd = {\"red\":255, \"green\":255, \"blue\":0};\n    } else if(obj.color == \"CIAN\") {\n        cmd = {\"red\":0, \"green\":255, \"blue\":255};\n    } else if(obj.color == \"PURPLE\") {\n        cmd = {\"red\":255, \"green\":0, \"blue\":255};\n    } else {\n        msg.statusCode = 400;\n    }\n    msg.payload = {\"cmd\": cmd};\n} else {\n    msg.statusCode = 400;\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 171,
+        "y": 355,
+        "wires": [
+            [
+                "8b9a50a6.25b9d",
+                "aa6643f4.46fd7"
+            ]
+        ]
+    },
+    {
+        "id": "aa6643f4.46fd7",
+        "type": "switch",
+        "z": "a3eea7eb.844ef8",
+        "name": "",
+        "property": "statusCode",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "200",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 1,
+        "x": 291,
+        "y": 308,
+        "wires": [
+            [
+                "32c48328.c0321c"
+            ]
+        ]
+    },
+    {
+        "id": "76fc1a0c.d66144",
+        "type": "http request",
+        "z": "ab19c9f7.4340b8",
+        "name": "",
+        "method": "PUT",
+        "ret": "txt",
+        "url": "localhost:1880/led",
+        "tls": "",
+        "x": 271,
+        "y": 257,
+        "wires": [
+            [
+                "a8a1bdbf.f809f"
+            ]
+        ]
+    },
+    {
+        "id": "fec443db.d2625",
+        "type": "inject",
+        "z": "ab19c9f7.4340b8",
+        "name": "",
+        "topic": "",
+        "payload": "{\"color\":\"BLUE\"}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 126,
+        "y": 201,
+        "wires": [
+            [
+                "76fc1a0c.d66144"
+            ]
+        ]
+    },
+    {
+        "id": "a8a1bdbf.f809f",
+        "type": "debug",
+        "z": "ab19c9f7.4340b8",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "statusCode",
+        "x": 431,
+        "y": 198,
+        "wires": []
+    }
+]
