@@ -1,0 +1,118 @@
+[
+    {
+        "id": "d871850f.4db758",
+        "type": "tab",
+        "label": "Ex 4 - Lista2 IoT"
+    },
+    {
+        "id": "2c3b8f5a.ddec",
+        "type": "mqtt in",
+        "z": "d871850f.4db758",
+        "name": "",
+        "topic": "fiap/aluno/nota",
+        "qos": "2",
+        "broker": "5d3eddb1.d463b4",
+        "x": 181,
+        "y": 133,
+        "wires": [
+            [
+                "4c3ac268.98b16c"
+            ]
+        ]
+    },
+    {
+        "id": "4c3ac268.98b16c",
+        "type": "change",
+        "z": "d871850f.4db758",
+        "name": "Armazena info em flow.nota",
+        "rules": [
+            {
+                "t": "set",
+                "p": "nota",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 433,
+        "y": 131,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5ca26011.ad2b8",
+        "type": "http in",
+        "z": "d871850f.4db758",
+        "name": "",
+        "url": "/nota",
+        "method": "get",
+        "swaggerDoc": "",
+        "x": 99,
+        "y": 253,
+        "wires": [
+            [
+                "574fc1c7.57c57"
+            ]
+        ]
+    },
+    {
+        "id": "d4c51977.4aa738",
+        "type": "http response",
+        "z": "d871850f.4db758",
+        "name": "",
+        "x": 572,
+        "y": 262,
+        "wires": []
+    },
+    {
+        "id": "574fc1c7.57c57",
+        "type": "change",
+        "z": "d871850f.4db758",
+        "name": "Recupera info de flow.nota",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "nota",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 336,
+        "y": 227,
+        "wires": [
+            [
+                "d4c51977.4aa738"
+            ]
+        ]
+    },
+    {
+        "id": "5d3eddb1.d463b4",
+        "type": "mqtt-broker",
+        "z": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    }
+]

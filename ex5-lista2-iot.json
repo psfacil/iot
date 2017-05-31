@@ -1,0 +1,64 @@
+[
+    {
+        "id": "5b477656.45baa8",
+        "type": "tab",
+        "label": "Ex 5 - Lista2-IoT"
+    },
+    {
+        "id": "be62c25a.e4f9d",
+        "type": "mqtt out",
+        "z": "5b477656.45baa8",
+        "name": "",
+        "topic": "fiap/aluno/info",
+        "qos": "2",
+        "retain": "",
+        "broker": "5d3eddb1.d463b4",
+        "x": 577,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "fcebae10.a6672",
+        "type": "http in",
+        "z": "5b477656.45baa8",
+        "name": "",
+        "url": "/info/professor",
+        "method": "put",
+        "swaggerDoc": "",
+        "x": 224,
+        "y": 162,
+        "wires": [
+            [
+                "be62c25a.e4f9d",
+                "ecac1e6b.35a03"
+            ]
+        ]
+    },
+    {
+        "id": "ecac1e6b.35a03",
+        "type": "http response",
+        "z": "5b477656.45baa8",
+        "name": "",
+        "x": 530,
+        "y": 221,
+        "wires": []
+    },
+    {
+        "id": "5d3eddb1.d463b4",
+        "type": "mqtt-broker",
+        "z": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    }
+]
